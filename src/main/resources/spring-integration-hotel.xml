@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:int="http://www.springframework.org/schema/integration"
+       xmlns:int-amqp="http://www.springframework.org/schema/integration/amqp"
+       xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+       xmlns:int-stream="http://www.springframework.org/schema/integration/stream"
+       xsi:schemaLocation="http://www.springframework.org/schema/integration/amqp http://www.springframework.org/schema/integration/amqp/spring-integration-amqp.xsd
+		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd
+		http://www.springframework.org/schema/integration/stream http://www.springframework.org/schema/integration/stream/spring-integration-stream.xsd
+		http://www.springframework.org/schema/rabbit http://www.springframework.org/schema/rabbit/spring-rabbit.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <import resource="./rabbitmq-infrastructure-hotel.xml" />
+    <import resource="./hotel-beans.xml" />
+
+
+
+
+    <int-amqp:inbound-channel-adapter
+            id="fromRabbitHotel"
+            queue-names="travel.booking.request.room"
+            connection-factory="connectionFactory"
+            message-converter="jsonMessageConverter"
+            acknowledge-mode="AUTO"
+            concurrent-consumers="1"
+    />
+
+
+
+    <int:service-activator
+            id="bookingService"
+            input-channel="fromRabbitHotel"
+            output-channel="toRabbitHotel"
+            ref="hotelBookingService"
+            method="process"
+    />
+
+
+
+    <int-amqp:outbound-channel-adapter
+            id="toRabbitHotel"
+            amqp-template="amqpTemplate"
+            exchange-name="travel.booking.response.room.ex"
+            routing-key="travel.booking.room"
+    />
+
+
+
+
+    <bean id="hotelBookingService" class="com.ing.diba.travel.hotel.HotelBookingService" >
+        <property name="hotelBookingAgency" ref="hotelBookingAgency"/>
+    </bean>
+
+
+
+</beans>

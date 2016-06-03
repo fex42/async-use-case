@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:int="http://www.springframework.org/schema/integration"
+       xmlns:int-amqp="http://www.springframework.org/schema/integration/amqp"
+       xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:int-stream="http://www.springframework.org/schema/integration/stream"
+       xsi:schemaLocation="http://www.springframework.org/schema/integration/amqp http://www.springframework.org/schema/integration/amqp/spring-integration-amqp.xsd
+		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd
+		http://www.springframework.org/schema/integration/stream http://www.springframework.org/schema/integration/stream/spring-integration-stream.xsd
+		http://www.springframework.org/schema/rabbit http://www.springframework.org/schema/rabbit/spring-rabbit.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+
+
+    <bean id="hotelBookingAgency" class="com.ing.diba.travel.hotel.HotelBookingAgency">
+        <constructor-arg value="New York"/>
+        <constructor-arg ref="hotelList"/>
+    </bean>
+
+
+    <util:list id="hotelList">
+        <bean class="com.ing.diba.travel.hotel.Hotel">
+            <constructor-arg value="The Roosevelt Hotel"/>
+            <constructor-arg value="New York"/>
+            <constructor-arg value="512"/>
+        </bean>
+        <bean class="com.ing.diba.travel.hotel.Hotel">
+            <constructor-arg value="Wyndham New Yorker"/>
+            <constructor-arg value="New York"/>
+            <constructor-arg value="512"/>
+        </bean>
+        <bean class="com.ing.diba.travel.hotel.Hotel">
+            <constructor-arg value="Paramount Times Square"/>
+            <constructor-arg value="New York"/>
+            <constructor-arg value="512"/>
+        </bean>
+        <bean class="com.ing.diba.travel.hotel.Hotel">
+            <constructor-arg value="Times Square Hotel"/>
+            <constructor-arg value="New York"/>
+            <constructor-arg value="512"/>
+        </bean>
+        <bean class="com.ing.diba.travel.hotel.Hotel">
+            <constructor-arg value="Park Central New York"/>
+            <constructor-arg value="New York"/>
+            <constructor-arg value="512"/>
+        </bean>
+        <bean class="com.ing.diba.travel.hotel.Hotel">
+            <constructor-arg value="DoubleTree by Hilton Metropolitan"/>
+            <constructor-arg value="New York"/>
+            <constructor-arg value="512"/>
+        </bean>
+        <bean class="com.ing.diba.travel.hotel.Hotel">
+            <constructor-arg value="Grand Hyatt New York"/>
+            <constructor-arg value="New York"/>
+            <constructor-arg value="512"/>
+        </bean>
+        <bean class="com.ing.diba.travel.hotel.Hotel">
+            <constructor-arg value="YOTEL New York at Times Square"/>
+            <constructor-arg value="New York"/>
+            <constructor-arg value="512"/>
+        </bean>
+        <bean class="com.ing.diba.travel.hotel.Hotel">
+            <constructor-arg value="Omni Berkshire Place"/>
+            <constructor-arg value="New York"/>
+            <constructor-arg value="512"/>
+        </bean>
+        <bean class="com.ing.diba.travel.hotel.Hotel">
+            <constructor-arg value="Hotel Edison"/>
+            <constructor-arg value="New York"/>
+            <constructor-arg value="512"/>
+        </bean>
+        <bean class="com.ing.diba.travel.hotel.Hotel">
+            <constructor-arg value="Novotel New York"/>
+            <constructor-arg value="New York"/>
+            <constructor-arg value="512"/>
+        </bean>
+        <bean class="com.ing.diba.travel.hotel.Hotel">
+            <constructor-arg value="New York Hilton Midtown"/>
+            <constructor-arg value="New York"/>
+            <constructor-arg value="512"/>
+        </bean>
+        <bean class="com.ing.diba.travel.hotel.Hotel">
+            <constructor-arg value="Millennium Broadway Hotel"/>
+            <constructor-arg value="New York"/>
+            <constructor-arg value="512"/>
+        </bean>
+        <bean class="com.ing.diba.travel.hotel.Hotel">
+            <constructor-arg value="Radisson Martinique"/>
+            <constructor-arg value="New York"/>
+            <constructor-arg value="512"/>
+        </bean>
+        <bean class="com.ing.diba.travel.hotel.Hotel">
+            <constructor-arg value="Park Lane Hotel"/>
+            <constructor-arg value="New York"/>
+            <constructor-arg value="512"/>
+        </bean>
+        <bean class="com.ing.diba.travel.hotel.Hotel">
+            <constructor-arg value="Hotel Pennsylvania"/>
+            <constructor-arg value="New York"/>
+            <constructor-arg value="512"/>
+        </bean>
+        <bean class="com.ing.diba.travel.hotel.Hotel">
+            <constructor-arg value="Hotel 373 Fifth Avenue"/>
+            <constructor-arg value="New York"/>
+            <constructor-arg value="512"/>
+        </bean>
+        <bean class="com.ing.diba.travel.hotel.Hotel">
+            <constructor-arg value="New York Marriott Marquis"/>
+            <constructor-arg value="New York"/>
+            <constructor-arg value="512"/>
+        </bean>
+        <bean class="com.ing.diba.travel.hotel.Hotel">
+            <constructor-arg value="WestHouse New York"/>
+            <constructor-arg value="New York"/>
+            <constructor-arg value="512"/>
+        </bean>
+        <bean class="com.ing.diba.travel.hotel.Hotel">
+            <constructor-arg value="Dylan Hotel"/>
+            <constructor-arg value="New York"/>
+            <constructor-arg value="512"/>
+        </bean>
+        <bean class="com.ing.diba.travel.hotel.Hotel">
+            <constructor-arg value="The Gotham Hotel"/>
+            <constructor-arg value="New York"/>
+            <constructor-arg value="512"/>
+        </bean>
+    </util:list>
+
+
+</beans>
