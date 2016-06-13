@@ -1,9 +1,11 @@
 package com.ing.diba.travel.hotel;
 
+import com.ing.diba.metrics.InstrumentedComponent;
+
 import java.util.HashMap;
 import java.util.Map;
 
-public class HotelBookingAgency {
+public class HotelBookingAgency extends InstrumentedComponent {
     private final String location;
 
     @SuppressWarnings("unchecked")
@@ -16,21 +18,25 @@ public class HotelBookingAgency {
     }
 
     public BookedRoom book(int fromDay, int toDay, int customer) {
-        synchronized (reservationPool) {
-            BookedRoom bookedRoom = null;
+        final Object context = start();
+        try {
+            synchronized (reservationPool) {
+                BookedRoom bookedRoom = null;
 
-            for (String name : reservationPool[fromDay].keySet()) {
-                Hotel hotel = reservationPool[fromDay].get(name);
-                System.out.println(hotel.hasCapacity(fromDay, toDay, customer));
-                if (hotel.hasCapacity(fromDay, toDay, customer)) {
-                    if (hotel.book(fromDay, toDay, customer)) {
-                        bookedRoom = new BookedRoom(hotel, fromDay, toDay, customer);
-                        break;
+                for (String name : reservationPool[fromDay].keySet()) {
+                    Hotel hotel = reservationPool[fromDay].get(name);
+                    if (hotel.hasCapacity(fromDay, toDay, customer)) {
+                        if (hotel.book(fromDay, toDay, customer)) {
+                            bookedRoom = new BookedRoom(hotel, fromDay, toDay, customer);
+                            break;
+                        }
                     }
                 }
-            }
 
-            return bookedRoom;
+                return bookedRoom;
+            }
+        } finally {
+            stop(context);
         }
     }
 
@@ -57,4 +63,9 @@ public class HotelBookingAgency {
         }
     }
 
+    @Override
+    protected boolean initTimer() {
+        final String[] names = {"hotel", "booking"};
+        return initTimer("travel.agency", names);
+    }
 }

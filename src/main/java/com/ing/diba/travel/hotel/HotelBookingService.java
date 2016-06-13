@@ -1,5 +1,6 @@
 package com.ing.diba.travel.hotel;
 
+import com.ing.diba.metrics.influxdb.IntervalInfluxdbReporter;
 import com.ing.diba.travel.HolidayPackage;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.GenericMessage;
@@ -10,6 +11,19 @@ import org.springframework.messaging.support.GenericMessage;
 public class HotelBookingService {
 
     private HotelBookingAgency hotelBookingAgency;
+    private IntervalInfluxdbReporter intervalInfluxdbReporter;
+
+    public IntervalInfluxdbReporter getIntervalInfluxdbReporter() {
+        return intervalInfluxdbReporter;
+    }
+
+    public void setIntervalInfluxdbReporter(IntervalInfluxdbReporter intervalInfluxdbReporter)
+            throws InterruptedException {
+        this.intervalInfluxdbReporter = intervalInfluxdbReporter;
+        if (this.intervalInfluxdbReporter != null) {
+            this.intervalInfluxdbReporter.start();
+        }
+    }
 
     public HotelBookingAgency getHotelBookingAgency() {
         return hotelBookingAgency;
@@ -26,9 +40,7 @@ public class HotelBookingService {
                                                             holidayPackage.toDay,
                                                             holidayPackage.customer);
 
-        System.out.println("holidayPackage.key: " + holidayPackage.key);
-        System.out.println("holidayPackage.bookedRoom: " + holidayPackage.bookedRoom);
-        return new GenericMessage<HolidayPackage>(holidayPackage);
+       return new GenericMessage<HolidayPackage>(holidayPackage);
     }
 
 }

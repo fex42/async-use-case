@@ -12,6 +12,7 @@
 
     <import resource="./rabbitmq-infrastructure-airline.xml" />
     <import resource="./airline-beans.xml" />
+    <import resource="./metrics.xml" />
 
 
 
@@ -49,6 +50,7 @@
 
     <bean id="airlineBookingService" class="com.ing.diba.travel.airline.AirlineBookingService" >
         <property name="airline" ref="airline"/>
+        <property name="intervalInfluxdbReporter" ref="intervalInfluxdbReporter"/>
     </bean>
 
 

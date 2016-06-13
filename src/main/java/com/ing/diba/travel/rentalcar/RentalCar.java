@@ -1,36 +1,45 @@
 package com.ing.diba.travel.rentalcar;
 
 
+import com.ing.diba.metrics.InstrumentedComponent;
+
 import java.util.HashMap;
 import java.util.Map;
 
 
-public class RentalCar {
+public class RentalCar
+        extends InstrumentedComponent {
     private final String location;
 
     @SuppressWarnings("unchecked")
     private Map<Integer, Car>[] reservationPool = new Map[365];
 
-    public RentalCar(final String location, int countCars, Car car) throws CloneNotSupportedException {
+    public RentalCar(final String location, int countCars, Car car)
+            throws CloneNotSupportedException {
         this.location = location;
         initReservationPool(countCars, car);
     }
 
     public HiredCar book(int fromDay, int toDay, int customer) {
-        synchronized (reservationPool) {
-            HiredCar hiredCar = null;
+        final Object context = start();
+        try {
+            synchronized (reservationPool) {
+                HiredCar hiredCar = null;
 
-            for (Integer number : reservationPool[fromDay].keySet()) {
-                Car car = reservationPool[fromDay].get(number);
-                if (car.hasCapacity(fromDay, toDay, car.getCapacity())) {
-                    if (car.book(fromDay, toDay, car.getCapacity())) {
-                        hiredCar = new HiredCar(car, fromDay, toDay, customer);
-                        break;
+                for (Integer number : reservationPool[fromDay].keySet()) {
+                    Car car = reservationPool[fromDay].get(number);
+                    if (car.hasCapacity(fromDay, toDay, car.getCapacity())) {
+                        if (car.book(fromDay, toDay, car.getCapacity())) {
+                            hiredCar = new HiredCar(car, fromDay, toDay, customer);
+                            break;
+                        }
                     }
                 }
-            }
 
-            return hiredCar;
+                return hiredCar;
+            }
+        } finally {
+            stop(context);
         }
     }
 
@@ -57,4 +66,9 @@ public class RentalCar {
         }
     }
 
+    @Override
+    protected boolean initTimer() {
+        final String[] names = {"car", "booking"};
+        return initTimer("travel.agency", names);
+    }
 }

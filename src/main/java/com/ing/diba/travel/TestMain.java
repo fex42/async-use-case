@@ -12,16 +12,26 @@ import java.util.UUID;
  */
 public class TestMain {
     private AmqpTemplate amqpTemplate;
+    private int count = 1000000;
 
     public static void main(final String... args)
             throws InterruptedException, IOException {
 
-        @SuppressWarnings("resource")
-        final AbstractApplicationContext context = new ClassPathXmlApplicationContext(
+        @SuppressWarnings("resource") final AbstractApplicationContext context = new ClassPathXmlApplicationContext(
                 "classpath:spring-integration-test.xml");
 
         TestMain testMain = context.getBean("testMain", TestMain.class);
 
+        for (int i = 0; testMain.count > i; ++i) {
+            publish(testMain);
+        }
+
+        System.out.println("waiting");
+        System.in.read();
+        System.exit(0);
+    }
+
+    private static void publish(TestMain testMain) {
         HolidayPackage holidayPackage = new HolidayPackage();
         holidayPackage.key = UUID.randomUUID().toString();
         holidayPackage.fromDay = 5;
@@ -39,10 +49,6 @@ public class TestMain {
         String exchange3 = "travel.booking.request.car.ex";
         String routingKey3 = "travel.booking.car";
         testMain.amqpTemplate.convertAndSend(exchange3, routingKey3, holidayPackage);
-
-        System.out.println("waiting");
-        System.in.read();
-        System.exit(0);
     }
 
     public AmqpTemplate getAmqpTemplate() {

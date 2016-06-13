@@ -12,6 +12,7 @@
 
     <import resource="./rabbitmq-infrastructure-hotel.xml" />
     <import resource="./hotel-beans.xml" />
+    <import resource="./metrics.xml" />
 
 
 
@@ -49,6 +50,7 @@
 
     <bean id="hotelBookingService" class="com.ing.diba.travel.hotel.HotelBookingService" >
         <property name="hotelBookingAgency" ref="hotelBookingAgency"/>
+        <property name="intervalInfluxdbReporter" ref="intervalInfluxdbReporter"/>
     </bean>
 
 

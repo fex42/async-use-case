@@ -13,10 +13,13 @@
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
+    <import resource="./metrics.xml" />
+
 
     <bean id="airline" class="com.ing.diba.travel.airline.Airline">
         <constructor-arg value="Frankfurt-New York"/>
         <constructor-arg ref="airlineList"/>
+        <property name="defaultTimer" ref="defaultTimer" />
     </bean>
 
 

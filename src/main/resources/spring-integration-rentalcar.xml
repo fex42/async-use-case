@@ -12,6 +12,7 @@
 
     <import resource="./rabbitmq-infrastructure-rentalcar.xml" />
     <import resource="./rentalcar-beans.xml" />
+    <import resource="./metrics.xml" />
 
 
 
@@ -49,6 +50,7 @@
 
     <bean id="carBookingService" class="com.ing.diba.travel.rentalcar.CarBookingService" >
         <property name="rentalCar" ref="rentalCar"/>
+        <property name="intervalInfluxdbReporter" ref="intervalInfluxdbReporter"/>
     </bean>
 
 

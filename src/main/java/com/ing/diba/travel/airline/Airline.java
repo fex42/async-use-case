@@ -1,9 +1,11 @@
 package com.ing.diba.travel.airline;
 
+import com.ing.diba.metrics.InstrumentedComponent;
+
 import java.util.HashMap;
 import java.util.Map;
 
-public class Airline {
+public class Airline extends InstrumentedComponent {
     private final String[] daySchedule = {"morning-1", "lunchtime-1", "evening-1",
                                           "morning-2", "lunchtime-2", "evening-2",
                                           "morning-3", "lunchtime-3", "evening-3"};
@@ -19,20 +21,25 @@ public class Airline {
     }
 
     public BookedFlight book(int fromDay, int toDay, int customer) {
-        synchronized (reservationPool) {
-            BookedFlight bookedFlight = null;
+        final Object context = start();
+        try {
+            synchronized (reservationPool) {
+                BookedFlight bookedFlight = null;
 
-            for (String name : reservationPool[fromDay].keySet()) {
-                Flight flight = reservationPool[fromDay].get(name);
-                if (flight.hasCapacity(fromDay, toDay, customer)) {
-                    if (flight.book(fromDay, toDay, customer)) {
-                        bookedFlight = new BookedFlight(flight, fromDay, toDay, customer);
-                        break;
+                for (String name : reservationPool[fromDay].keySet()) {
+                    Flight flight = reservationPool[fromDay].get(name);
+                    if (flight.hasCapacity(fromDay, toDay, customer)) {
+                        if (flight.book(fromDay, toDay, customer)) {
+                            bookedFlight = new BookedFlight(flight, fromDay, toDay, customer);
+                            break;
+                        }
                     }
                 }
-            }
 
-            return bookedFlight;
+                return bookedFlight;
+            }
+        } finally {
+            stop(context);
         }
     }
 
@@ -62,4 +69,9 @@ public class Airline {
         }
     }
 
+    @Override
+    protected boolean initTimer() {
+        final String[] names = {"airline", "booking"};
+        return initTimer("travel.agency", names);
+    }
 }

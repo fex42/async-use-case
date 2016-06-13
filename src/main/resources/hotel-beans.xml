@@ -12,11 +12,13 @@
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
+    <import resource="./metrics.xml" />
 
 
     <bean id="hotelBookingAgency" class="com.ing.diba.travel.hotel.HotelBookingAgency">
         <constructor-arg value="New York"/>
         <constructor-arg ref="hotelList"/>
+        <property name="defaultTimer" ref="defaultTimer" />
     </bean>
 
 

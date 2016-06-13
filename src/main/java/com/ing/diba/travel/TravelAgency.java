@@ -1,5 +1,6 @@
 package com.ing.diba.travel;
 
+import com.ing.diba.metrics.influxdb.IntervalInfluxdbReporter;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.messaging.Message;
 
@@ -14,9 +15,22 @@ public class TravelAgency {
     private final ConcurrentMap<String, HolidayPackage> holidayPackageMap;
 
     private AmqpTemplate amqpTemplate;
+    private IntervalInfluxdbReporter intervalInfluxdbReporter;
 
     public TravelAgency() {
         holidayPackageMap = new ConcurrentHashMap<String, HolidayPackage>();
+    }
+
+    public IntervalInfluxdbReporter getIntervalInfluxdbReporter() {
+        return intervalInfluxdbReporter;
+    }
+
+    public void setIntervalInfluxdbReporter(IntervalInfluxdbReporter intervalInfluxdbReporter)
+            throws InterruptedException {
+        this.intervalInfluxdbReporter = intervalInfluxdbReporter;
+        if (this.intervalInfluxdbReporter != null) {
+            this.intervalInfluxdbReporter.start();
+        }
     }
 
     public AmqpTemplate getAmqpTemplate() {
@@ -25,12 +39,6 @@ public class TravelAgency {
 
     public void setAmqpTemplate(AmqpTemplate amqpTemplate) {
         this.amqpTemplate = amqpTemplate;
-    }
-
-    public Message<?> process(Message<?> inputMessage) {
-
-
-        return null;
     }
 
 
@@ -67,11 +75,8 @@ public class TravelAgency {
     }
 
     private void print(HolidayPackage holidayPackage) {
-        if ((holidayPackage.hiredCar != null) && (holidayPackage.bookedFlight != null)  && (holidayPackage.bookedRoom != null)) {
-            System.out.println("holidayPackage.key: " + holidayPackage.key);
-            System.out.println("holidayPackage.hiredCar: " + holidayPackage.hiredCar);
-            System.out.println("holidayPackage.bookedFlight: " + holidayPackage.bookedFlight);
-            System.out.println("holidayPackage.bookedRoom: " + holidayPackage.bookedRoom);
+        if ((holidayPackage.hiredCar != null) && (holidayPackage.bookedFlight != null) && (holidayPackage.bookedRoom != null)) {
+            System.out.println("holidayPackage.key: " + holidayPackage.key + " booked");
         }
     }
 

@@ -11,7 +11,7 @@
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <import resource="./rabbitmq-connection.xml" />
-
+    <import resource="./metrics.xml" />
 
 
     <int-amqp:inbound-channel-adapter
@@ -72,6 +72,7 @@
 
     <bean id="travelAgency" class="com.ing.diba.travel.TravelAgency" >
         <property name="amqpTemplate" ref="amqpTemplate"/>
+        <property name="intervalInfluxdbReporter" ref="intervalInfluxdbReporter"/>
     </bean>
 
 

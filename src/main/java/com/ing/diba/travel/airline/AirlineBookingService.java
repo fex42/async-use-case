@@ -1,5 +1,6 @@
 package com.ing.diba.travel.airline;
 
+import com.ing.diba.metrics.influxdb.IntervalInfluxdbReporter;
 import com.ing.diba.travel.HolidayPackage;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.GenericMessage;
@@ -10,6 +11,19 @@ import org.springframework.messaging.support.GenericMessage;
 public class AirlineBookingService {
 
     private Airline airline;
+    private IntervalInfluxdbReporter intervalInfluxdbReporter;
+
+    public IntervalInfluxdbReporter getIntervalInfluxdbReporter() {
+        return intervalInfluxdbReporter;
+    }
+
+    public void setIntervalInfluxdbReporter(IntervalInfluxdbReporter intervalInfluxdbReporter)
+            throws InterruptedException {
+        this.intervalInfluxdbReporter = intervalInfluxdbReporter;
+        if (this.intervalInfluxdbReporter != null) {
+            this.intervalInfluxdbReporter.start();
+        }
+    }
 
     public Airline getAirline() {
         return airline;

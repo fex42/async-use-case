@@ -13,11 +13,13 @@
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
+    <import resource="./metrics.xml" />
 
     <bean id="rentalCar" class="com.ing.diba.travel.rentalcar.RentalCar">
         <constructor-arg value="New York"/>
         <constructor-arg value="345"/>
         <constructor-arg ref="car"/>
+        <property name="defaultTimer" ref="defaultTimer" />
     </bean>
 
 

@@ -3,7 +3,8 @@ package com.ing.diba.travel.hotel;
 import com.ing.diba.travel.Bookable;
 import com.ing.diba.travel.reservation.ReservationEngine;
 
-public class Hotel implements Bookable, Cloneable {
+public class Hotel
+implements Bookable, Cloneable {
 
     private final String location;
 
@@ -19,16 +20,18 @@ public class Hotel implements Bookable, Cloneable {
 
 
     public boolean book(int fromDay, int toDay, int customer) {
-        return reservationEngine.book(fromDay, toDay, customer, true);
+            return reservationEngine.book(fromDay, toDay, customer, true);
+     }
+
+    @Override
+    public int getCapacityOnDay(int onDay) {
+        return 100;
     }
 
     public boolean cancel(int fromDay, int toDay, int customer) {
         return reservationEngine.cancel(fromDay, toDay, customer, true);
     }
 
-    public int getCapacity() {
-        return reservationEngine.getCapacityPerDay();
-    }
 
     public String getLocation() {
         return location;
@@ -42,14 +45,10 @@ public class Hotel implements Bookable, Cloneable {
         return reservationEngine.hasCapacity( fromDay,  toDay,  customer, true);
     }
 
-    public int getCapacityOnDay(int onDay) {
-        return reservationEngine.getCapacityOnDay(onDay);
-    }
 
     @Override
     public Hotel clone() throws CloneNotSupportedException
     {
         return (Hotel) super.clone();
     }
-
 }
